@@ -4,7 +4,7 @@ import os
 import pdb
 import torch
 import sys
-from utils.config import proj_path
+proj_path = "/share/home/fengxiaocheng/ychuang/LatentFusion"
 
 sys.path.append(proj_path)
 
