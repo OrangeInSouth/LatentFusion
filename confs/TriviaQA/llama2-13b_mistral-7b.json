@@ -1,8 +1,8 @@
 {
   "file_path": {
-    "dev_file_path": "/data/home/cpfu/ychuang/reimplement_deepen/datasets/TriviaQA/wikipedia-dev-1900.jsonl",
-    "test_file_path": "/data/home/cpfu/ychuang/reimplement_deepen/datasets/TriviaQA/wikipedia-test-6000.jsonl",
-    "demon_file_path": "/data/home/cpfu/ychuang/reimplement_deepen/datasets/TriviaQA/wikipedia-demon-all_sample5_seed42.jsonl"
+    "dev_file_path": "/share/home/fengxiaocheng/baohangli/Experiments/LLM_ensemble/Datasets/TriviaQA/wikipedia-dev-1900.jsonl",
+    "test_file_path": "/share/home/fengxiaocheng/baohangli/Experiments/LLM_ensemble/Datasets/TriviaQA/wikipedia-test-6000.jsonl",
+    "demon_file_path": "/share/home/fengxiaocheng/baohangli/Experiments/LLM_ensemble/Datasets/TriviaQA/wikipedia-demon-all_sample5_seed42.jsonl"
   },
   "prompt_template": {
     "main_model_system_template": "<s>{}",

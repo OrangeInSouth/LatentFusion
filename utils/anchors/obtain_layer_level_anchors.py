@@ -14,3 +14,4 @@ state = torch.load(anchor_path)
 for index, model in enumerate(models):
     state[model] = state[model][layer_pair[index]]
 
+torch.save(state, output_path)

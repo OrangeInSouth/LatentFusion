@@ -1,8 +1,8 @@
 {
     "file_path": {
-      "dev_file_path": "/data/home/cpfu/ychuang/reimplement_deepen/datasets/NaturalQuestions/dev/v1.0-simplified_simplified-nq-train.simpled_dev_100000_sample1600_seed42.jsonl",
-      "test_file_path": "/data/home/cpfu/ychuang/reimplement_deepen/datasets/NaturalQuestions/test/natural-questions.jsonl",
-      "demon_file_path": "/data/home/cpfu/ychuang/reimplement_deepen/datasets/NaturalQuestions/dev/v1.0-simplified_simplified-nq-train.simpled_few_shot_doman_6926_sample5_seed43.jsonl"
+      "dev_file_path": "/share/home/fengxiaocheng/baohangli/Experiments/LLM_ensemble/Datasets/NaturalQuestions/dev/v1.0-simplified_simplified-nq-train.simpled_dev_100000_sample1600_seed42.jsonl",
+      "test_file_path": "/share/home/fengxiaocheng/baohangli/Experiments/LLM_ensemble/Datasets/NaturalQuestions/test/natural-questions.jsonl",
+      "demon_file_path": "/share/home/fengxiaocheng/baohangli/Experiments/LLM_ensemble/Datasets/NaturalQuestions/dev/v1.0-simplified_simplified-nq-train.simpled_few_shot_doman_6926_sample5_seed43.jsonl"
     },
     "prompt_template": {
       "main_model_system_template": "<s>{}",

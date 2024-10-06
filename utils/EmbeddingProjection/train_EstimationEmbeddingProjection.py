@@ -1,6 +1,6 @@
 import sys
 import argparse
-sys.path.append("/data/home/cpfu/ychuang/DeepEN_v0601_ychuang")
+# sys.path.append("/data/home/cpfu/ychuang/DeepEN_v0601_ychuang")
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -38,11 +38,7 @@ if __name__ == "__main__":
 
     torch.manual_seed(seed)
 
-    # if debug_mode:
-    #     anchor_embeddings_path = "/data/home/cpfu/ychuang/DeepEN_v0601_ychuang/experiments/anchor_embeddings/llama2-13b_mistral-7b_20000anchors_seed1.pt"
-    # else:
-    #     anchor_embeddings_path = "/data1/cpfu/ychuang/llama2-13b_mistral-7b_200000anchors_seed1.pt"
-    anchor_embeddings_path = "/data1/cpfu/ychuang/llama2-13b_mistral-7b_200000anchors_seed1_layer40-32.pt"
+    anchor_embeddings_path = "/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/llama2-13b_mistral-7b_200000anchors_seed1_layer40-32.pt"
     save_dir = "/data7/cpfu/ychuang/DeepEN_v0601_ychuang/experiments/embedding_projection"
     state = torch.load(anchor_embeddings_path)
     # src_embeddings = state["mistral-7b"][32]
