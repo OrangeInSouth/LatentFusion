@@ -12,7 +12,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from utils.model_config import model_paths
+from model_config import model_paths
 from src.RelativeFuser import RelativeFuser
 from src.EmbeddingProjectionFuser_test import EmbeddingProjectionFuser
 from src.DeepEnsemblerGenerator import DeepEnsemblerGenerator
