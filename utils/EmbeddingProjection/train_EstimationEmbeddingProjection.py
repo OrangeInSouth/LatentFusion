@@ -39,7 +39,7 @@ if __name__ == "__main__":
     torch.manual_seed(seed)
 
     anchor_embeddings_path = "/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/llama2-13b_mistral-7b_200000anchors_seed1_layer40-32.pt"
-    save_dir = "/data7/cpfu/ychuang/DeepEN_v0601_ychuang/experiments/embedding_projection"
+    save_dir = "/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/embedding_projection"
     state = torch.load(anchor_embeddings_path)
     # src_embeddings = state["mistral-7b"][32]
     # tgt_embeddings = state["llama2-13b"][40]
