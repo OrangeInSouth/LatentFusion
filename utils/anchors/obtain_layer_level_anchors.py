@@ -6,7 +6,7 @@ anchor_path = f"{anchors_dir}/{anchor_prefix}.pt"
 models = ["llama2-13b", "mistral-7b"]
 layer_pair = [40, 32]
 
-output_path = f"{anchor_path}/{anchor_prefix}_layer{'-'.join([str(i) for i in layer_pair])}.pt"
+output_path = f"{anchors_dir}/{anchor_prefix}_layer{'-'.join([str(i) for i in layer_pair])}.pt"
 
 
 state = torch.load(anchor_path)
