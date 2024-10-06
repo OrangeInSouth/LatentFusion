@@ -1,7 +1,7 @@
 import os
 model_dir = "/share/home/fengxiaocheng/baohangli/ModelsHub/"
 
-model_paths = {"mistral-7b": "mistralai/Mistral-7B-v0.1",
+model_paths = {"mistral-7b": "Mistral-7B-v0.1",
         "internlm-20b": "internlm-20b",
         "skywork-13b": "Skywork/Skywork-13B-base",
         "llama2-13b": "Llama-2-13b-hf",
