@@ -39,7 +39,7 @@ if __name__ == '__main__':
     # Added by Yichong:
     parser.add_argument('--models', nargs='+', required=True, help="models, list of strings")
     parser.add_argument('--layer-alignment', nargs='+', required=True, help="specify the layer alignment between models, list of int")
-    parser.add_argument('--anchors-path', type=str, required=True, help="path to anchor embeddings, string")
+    parser.add_argument('--anchors-path', type=str, help="path to anchor embeddings, string")
     parser.add_argument('--fuser', type=str, default="EmbeddingProjectionFuser", help="Type of Fuser")
     ##   For Relative Fuser
     parser.add_argument('--beta', type=float, default=0.0, help="Weight of the MLE Loss, float between 0 to 1.")
