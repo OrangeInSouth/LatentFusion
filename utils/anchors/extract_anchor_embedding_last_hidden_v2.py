@@ -53,6 +53,7 @@ def extract_anchor_embeddings(model_name_list, data, output_dir, anchor_num=4000
     count = 0
     batch_count = 0
     batch_size = 10000
+    batch_index = 0
     sample_per_sent = max(10, int(anchor_num / len(data)))
     anchor_token_set = Counter(['llllllll'])
     for tmp_j in tqdm(range(anchor_num)):
@@ -115,13 +116,14 @@ def extract_anchor_embeddings(model_name_list, data, output_dir, anchor_num=4000
                 for l in range(len(anchor_embeddings[0])):  # for each layer
                     reshaped_anchor_embeddings.append(torch.concatenate([hidden_states[l] for hidden_states in anchor_embeddings]))
                 res_anchor_embeddings[model_name_list[i]] = reshaped_anchor_embeddings
-            output_path = os.path.join(output_dir, '_'.join(model_name_list) + f"_{anchor_num}anchors_seed{seed}_{int(count/batch_size)}.pt")
+            output_path = os.path.join(output_dir, '_'.join(model_name_list) + f"_{anchor_num}anchors_seed{seed}_{batch_index}.pt")
             print(f"anchor embeddings saved in: {output_path}")
             torch.save(res_anchor_embeddings, output_path)
 
             for i in range(model_num):
                 anchor_embeddings_list[i] = []
             batch_count = 0
+            batch_index += 1
             torch.cuda.empty_cache()
 
         if count >= anchor_num:
@@ -143,18 +145,18 @@ def extract_anchor_embeddings(model_name_list, data, output_dir, anchor_num=4000
 
     
     # anchor_embeddings_list: (model_num, anchor_num, layer_num, d)
-    res_anchor_embeddings = {} # to be a dict {"model": (layer_num, anchor_num, d)}
+    # res_anchor_embeddings = {} # to be a dict {"model": (layer_num, anchor_num, d)}
     
-    for i in range(model_num):
-        anchor_embeddings = anchor_embeddings_list[i]  # (anchor_num, layer_num, d)
-        reshaped_anchor_embeddings = []
+    # for i in range(model_num):
+    #     anchor_embeddings = anchor_embeddings_list[i]  # (anchor_num, layer_num, d)
+    #     reshaped_anchor_embeddings = []
         
-        for l in range(len(anchor_embeddings[0])):
-            reshaped_anchor_embeddings.append(torch.stack([hidden_states[l] for hidden_states in anchor_embeddings]))
-        res_anchor_embeddings[model_name_list[i]] = reshaped_anchor_embeddings
-    output_path = os.path.join(output_dir, '_'.join(model_name_list) + f"_{anchor_num}anchors_seed{seed}.pt")
-    print(f"anchor embeddings saved in: {output_path}")
-    torch.save(res_anchor_embeddings, output_path)
+    #     for l in range(len(anchor_embeddings[0])):
+    #         reshaped_anchor_embeddings.append(torch.stack([hidden_states[l] for hidden_states in anchor_embeddings]))
+    #     res_anchor_embeddings[model_name_list[i]] = reshaped_anchor_embeddings
+    # output_path = os.path.join(output_dir, '_'.join(model_name_list) + f"_{anchor_num}anchors_seed{seed}.pt")
+    # print(f"anchor embeddings saved in: {output_path}")
+    # torch.save(res_anchor_embeddings, output_path)
 
 
 if __name__ == "__main__":
@@ -162,7 +164,10 @@ if __name__ == "__main__":
     # data = read_multiline_json(data_path)
     # data = [i["question"] for i in data]
 
+    # Load data and perform truncate
     data_path = "/share/home/fengxiaocheng/ychuang/Downloads/minipile/"
     dataset = [" ".join(i['text'].split()[:100]) for i in load_from_disk(data_path)["train"]]
+
     output_dir = f"{proj_path}/experiments/anchor_embeddings/"
-    extract_anchor_embeddings(["llama2-13b", "mistral-7b"], dataset, output_dir, anchor_num=200000)
+
+    extract_anchor_embeddings(["llama2-13b", "mistral-7b"], dataset, output_dir, anchor_num=1000000)

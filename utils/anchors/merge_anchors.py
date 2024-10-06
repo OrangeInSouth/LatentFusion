@@ -2,8 +2,9 @@ import torch
 import os
 from tqdm import tqdm
 
-anchor_dir = "/data/home/cpfu/ychuang/DeepEN_v0601_ychuang/experiments/anchor_embeddings/"
+anchor_dir = "/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/"
 anchor_prefix = "llama2-13b_mistral-7b_200000anchors_seed1"
+output_path = f"/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/{anchor_prefix}.pt"
 
 files = [f for f in os.listdir(anchor_dir) if f.startswith(anchor_prefix) and f != anchor_prefix + '.pt']
 files = sorted(files)
@@ -21,7 +22,7 @@ for model in models:
     model_state = [torch.concatenate([state[model][l] for state in states]) for l in range(layer_num)]
     res_state[model] = model_state
 
-output_path = f"/data1/cpfu/ychuang/{anchor_prefix}.pt"
+
 torch.save(res_state, output_path)
 
 print(f"Merged {len(res_state[models[0]][0])} anchors.")
