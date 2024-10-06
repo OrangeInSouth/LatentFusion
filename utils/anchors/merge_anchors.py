@@ -14,7 +14,7 @@ for file in tqdm(files):
     state = torch.load(f"{anchor_dir}/{file}", map_location=torch.device('cpu'))
     states.append(state)
 
-models = states[0].keys()
+models = list(states[0].keys())
 
 res_state = {}
 for model in models:
