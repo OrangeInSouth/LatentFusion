@@ -1,5 +1,5 @@
 import os
-model_dir = "/data3/cpfu/baohangli/ModelsHub/"
+model_dir = "/share/home/fengxiaocheng/baohangli/ModelsHub/"
 
 model_paths = {"mistral-7b": "mistralai/Mistral-7B-v0.1",
         "internlm-20b": "internlm-20b",

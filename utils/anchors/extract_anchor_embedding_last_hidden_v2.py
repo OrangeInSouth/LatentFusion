@@ -4,8 +4,9 @@ import os
 import pdb
 import torch
 import sys
-sys.path.append("/data/home/cpfu/ychuang/DeepEN_v0601_ychuang")
+from utils.config import proj_path
 
+sys.path.append(proj_path)
 
 from tqdm import tqdm
 from collections import Counter
@@ -161,7 +162,7 @@ if __name__ == "__main__":
     # data = read_multiline_json(data_path)
     # data = [i["question"] for i in data]
 
-    data_path = "/data/home/cpfu/ychuang/Downloads/minipile/"
+    data_path = "/share/home/fengxiaocheng/ychuang/Downloads/minipile/"
     dataset = [" ".join(i['text'].split()[:100]) for i in load_from_disk(data_path)["train"]]
-    output_dir = "/data/home/cpfu/ychuang/DeepEN_v0601_ychuang/experiments/anchor_embeddings/"
+    output_dir = f"{proj_path}/experiments/anchor_embeddings/"
     extract_anchor_embeddings(["llama2-13b", "mistral-7b"], dataset, output_dir, anchor_num=200000)

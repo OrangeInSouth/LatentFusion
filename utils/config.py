@@ -1,0 +1,1 @@
+proj_path = "/share/home/fengxiaocheng/ychuang/LatentFusion"
