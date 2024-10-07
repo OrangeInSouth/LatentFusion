@@ -49,10 +49,10 @@ while index < len(train_dataset):
 
 scores = torch.concatenate(scores, dim=0)
 
-pdb.set_trace()
+# pdb.set_trace()
 # 4. Filter Anchors
 res_sample_indices = scores.topk(filtered_anchor_num)[1]
-res_anchors = train_dataset[res_sample_indices]
+res_anchors = train_dataset[res_sample_indices.tolist()]
 res_src_embeddings = res_anchors[0]
 res_tgt_embeddings = res_anchors[1]
 
