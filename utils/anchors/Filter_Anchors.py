@@ -1,16 +1,22 @@
 import torch
 import pdb
+import sys
 from torch.utils.data import DataLoader, TensorDataset, random_split
 from utils.EmbeddingProjection.EmbeddingProjection import DeepEmbeddingProjection, EstimationEmbeddingProjection
 
 embedding_projection_path = "/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/embedding_projection/"\
     "EstimationEmbeddingProjection_200000anchors_seed1.pt"
 anchor_embeddings_path = "/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/llama2-13b_mistral-7b_200000anchors_seed1_layer40-32.pt"
-output_path = "/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/llama2-13b_mistral-7b_filtered100000anchors_seed1_layer40-32.pt"
-filtered_anchor_num = 100000
+
+if len(sys.argv) > 1:
+    filtered_anchor_num = int(sys.argv[1])
+else:
+    filtered_anchor_num = 80000
 src_model = "mistral-7b"
 tgt_model = "llama2-13b"
 seed = 1
+
+output_path = f"/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/llama2-13b_mistral-7b_filtered{filtered_anchor_num}anchors_seed{seed}_layer40-32.pt"
 device = "cuda:0"
 
 torch.manual_seed(seed)
