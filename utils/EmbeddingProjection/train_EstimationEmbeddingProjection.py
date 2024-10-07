@@ -38,8 +38,11 @@ if __name__ == "__main__":
 
     torch.manual_seed(seed)
 
-    anchor_embeddings_path = "/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/llama2-13b_mistral-7b_200000anchors_seed1_layer40-32.pt"
+    # anchor_embeddings_path = "/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/llama2-13b_mistral-7b_200000anchors_seed1_layer40-32.pt"
+    anchor_embeddings_path = "/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/llama2-13b_mistral-7b_filtered100000anchors_seed1_layer40-32.pt"
     save_dir = "/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/embedding_projection"
+    output_path = f"{save_dir}/EstimationEmbeddingProjection_filtered{anchor_num}anchors_seed{seed}.pt"
+
     state = torch.load(anchor_embeddings_path)
     # src_embeddings = state["mistral-7b"][32]
     # tgt_embeddings = state["llama2-13b"][40]
@@ -57,7 +60,7 @@ if __name__ == "__main__":
     print("Estimation:")
     esitmation_embedding_projection = EstimationEmbeddingProjection()
     esitmation_embedding_projection.fit(train_dataset, anchor_num=anchor_num)
-    esitmation_embedding_projection.save(f"{save_dir}/EstimationEmbeddingProjection_{anchor_num}anchors_seed{seed}.pt")
+    esitmation_embedding_projection.save(output_path)
 
     print("\nTest:")
     with torch.no_grad():

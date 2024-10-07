@@ -61,3 +61,4 @@ state[tgt_model] = res_tgt_embeddings
 
 # 5. Save Filtered Anchors
 torch.save(state, output_path)
+print(f"Filterd Anchor Embedding Saved: {output_path}")
