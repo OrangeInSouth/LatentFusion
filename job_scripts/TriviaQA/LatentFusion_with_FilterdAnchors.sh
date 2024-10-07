@@ -15,18 +15,22 @@ conda activate ychuang
 export CUDA_VISIBLE_DEVICES=0
 mode=dev
 seed=1
-anchor_num=100000
+# anchor_num=100000
 
 proj_path=/share/home/fengxiaocheng/ychuang/LatentFusion
 export PYTHONPATH=${proj_path}
 cd ${proj_path}
 
-python src/main.py --config confs/TriviaQA/llama2-13b_mistral-7b.json \
---models llama2-13b mistral-7b \
---layer-alignment 40 32 \
---anchors-path ${proj_path}/experiments/anchor_embeddings/llama2-13b_mistral-7b_200000anchors_seed1_1.pt \
---embedding-projection-path ${proj_path}/experiments//embedding_projection/EstimationEmbeddingProjection_filtered200000anchors_seed1.pt \
---result_save_dir ${proj_path}/experiments/TriviaQA/${mode}/llama2-13b_mistral-7b_filtered${anchor_num}anchors_seed${seed} \
---sampling-anchor-num 20000 \
---ensemble_weight 0.001 0.999 \
---run_mode ${mode} 
+for anchor_num in 80000 120000 160000; do
+
+    python src/main.py --config confs/TriviaQA/llama2-13b_mistral-7b.json \
+    --models llama2-13b mistral-7b \
+    --layer-alignment 40 32 \
+    --anchors-path ${proj_path}/experiments/anchor_embeddings/llama2-13b_mistral-7b_200000anchors_seed1_1.pt \
+    --embedding-projection-path ${proj_path}/experiments//embedding_projection/EstimationEmbeddingProjection_filtered${anchor_num}anchors_seed1.pt \
+    --result_save_dir ${proj_path}/experiments/TriviaQA/${mode}/llama2-13b_mistral-7b_filtered${anchor_num}anchors_seed${seed} \
+    --sampling-anchor-num 20000 \
+    --ensemble_weight 0.001 0.999 \
+    --run_mode ${mode} 
+
+done
