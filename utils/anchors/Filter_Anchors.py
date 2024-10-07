@@ -1,4 +1,5 @@
 import torch
+import pdb
 from torch.utils.data import DataLoader, TensorDataset, random_split
 from utils.EmbeddingProjection.EmbeddingProjection import DeepEmbeddingProjection, EstimationEmbeddingProjection
 
@@ -48,6 +49,7 @@ while index < len(train_dataset):
 
 scores = torch.concatenate(scores, dim=0)
 
+pdb.set_trace()
 # 4. Filter Anchors
 res_sample_indices = scores.topk(filtered_anchor_num)[1]
 res_anchors = train_dataset[res_sample_indices]
