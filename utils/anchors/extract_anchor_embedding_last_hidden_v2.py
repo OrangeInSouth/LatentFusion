@@ -170,4 +170,4 @@ if __name__ == "__main__":
 
     output_dir = f"{proj_path}/experiments/anchor_embeddings/"
 
-    extract_anchor_embeddings(["llama2-13b", "mistral-7b"], dataset, output_dir, anchor_num=200000)
+    extract_anchor_embeddings(["llama2-13b", "mistral-7b"], dataset, output_dir, anchor_num=1000000)
