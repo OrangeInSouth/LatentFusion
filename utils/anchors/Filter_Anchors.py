@@ -49,7 +49,7 @@ while index < len(train_dataset):
     batch_src_embeds = batch_data[0].to(device)
     batch_tgt_embeds = batch_data[1].to(device)
     pred_embeds = embedding_projection.transform(batch_src_embeds)
-    batch_scores = (pred_embeds - batch_tgt_embeds).abs().mean(dim=-1)
+    batch_scores = (pred_embeds - batch_tgt_embeds).abs().mean(dim=-1) * -1
     scores.append(batch_scores)
     index += batch_num
 

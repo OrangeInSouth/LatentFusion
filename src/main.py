@@ -214,7 +214,7 @@ if __name__ == '__main__':
             result_file_path = os.path.join(result_save_dir,
                                                 f'EmbeddingProecjtionFuser_{sampling_anchor_num}anchors_fuse{"-".join([str(i) for i in layer_alignment])}')
             if len(set(ensemble_weight)) != 1:
-                result_file_path += "_" + "-".join([str(round(i, 2)) for i in ensemble_weight])
+                result_file_path += "_" + "-".join([str(round(i, 4)) for i in ensemble_weight])
             result_file_path += ".jsonl"
             
         start_index = 0
