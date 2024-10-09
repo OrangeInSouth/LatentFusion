@@ -3,6 +3,7 @@ import os
 from tqdm import tqdm
 import pdb
 import re
+import argparse
 
 anchor_dir = "/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/"
 anchor_prefix = "llama2-13b_mistral-7b_1000000anchors_seed1"
