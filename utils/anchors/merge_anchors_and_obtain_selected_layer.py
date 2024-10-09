@@ -26,7 +26,7 @@ layer_pair = [int(i) for i in args.layer_pair]
 
 output_path = f"{anchor_dir}/{anchor_prefix}_layer{'-'.join([str(i) for i in layer_pair])}.pt"
 
-files = [f for f in os.listdir(anchor_dir) if re.match(fr"^{re.escape(prefix)}_\d+\.pt$", f)]
+files = [f for f in os.listdir(anchor_dir) if re.match(fr"^{re.escape(anchor_prefix)}_\d+\.pt$", f)]
 files = sorted(files)
 
 states = []
