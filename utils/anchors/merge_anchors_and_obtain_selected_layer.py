@@ -10,7 +10,7 @@ layer_pair = [40, 32]
 
 output_path = f"{anchor_dir}/{anchor_prefix}_layer{'-'.join([str(i) for i in layer_pair])}.pt"
 
-files = [f for f in os.listdir(anchor_dir) if f.startswith(anchor_prefix) and f != anchor_prefix + '.pt'][:5]
+files = [f for f in os.listdir(anchor_dir) if f.startswith(anchor_prefix) and f != anchor_prefix + '.pt']
 files = sorted(files)
 
 states = []
@@ -28,5 +28,5 @@ for model in models:
 
 torch.save(res_state, output_path)
 
-print(f"Merged {len(res_state[models[0]][0])} anchors.")
+print(f"Merged {len(res_state[models[0]])} anchors.")
 print(f"Saved into: {output_path}")
