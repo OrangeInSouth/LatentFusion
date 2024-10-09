@@ -29,5 +29,35 @@ python src/main.py --config confs/TriviaQA/llama2-13b_mistral-7b.json \
 --embedding-projection-path ${proj_path}/experiments//embedding_projection/EstimationEmbeddingProjection_${anchor_num}anchors_seed1.pt \
 --result_save_dir ${proj_path}/experiments/TriviaQA/${mode}/llama2-13b_mistral-7b_${anchor_num}anchors_seed${seed} \
 --sampling-anchor-num 20000 \
---ensemble_weight 0.001 0.999 \
+--ensemble_weight 0.5 0.5 \
+--run_mode ${mode} 
+
+python src/main.py --config confs/TriviaQA/llama2-13b_mistral-7b.json \
+--models llama2-13b mistral-7b \
+--layer-alignment 40 32 \
+--anchors-path ${proj_path}/experiments/anchor_embeddings/llama2-13b_mistral-7b_1000000anchors_seed1_bug.pt \
+--embedding-projection-path ${proj_path}/experiments//embedding_projection/EstimationEmbeddingProjection_${anchor_num}anchors_seed1.pt \
+--result_save_dir ${proj_path}/experiments/TriviaQA/${mode}/llama2-13b_mistral-7b_${anchor_num}anchors_seed${seed} \
+--sampling-anchor-num 20000 \
+--ensemble_weight 0.6 0.4 \
+--run_mode ${mode} 
+
+python src/main.py --config confs/TriviaQA/llama2-13b_mistral-7b.json \
+--models llama2-13b mistral-7b \
+--layer-alignment 40 32 \
+--anchors-path ${proj_path}/experiments/anchor_embeddings/llama2-13b_mistral-7b_1000000anchors_seed1_bug.pt \
+--embedding-projection-path ${proj_path}/experiments//embedding_projection/EstimationEmbeddingProjection_${anchor_num}anchors_seed1.pt \
+--result_save_dir ${proj_path}/experiments/TriviaQA/${mode}/llama2-13b_mistral-7b_${anchor_num}anchors_seed${seed} \
+--sampling-anchor-num 20000 \
+--ensemble_weight 0.7 0.3 \
+--run_mode ${mode} 
+
+python src/main.py --config confs/TriviaQA/llama2-13b_mistral-7b.json \
+--models llama2-13b mistral-7b \
+--layer-alignment 40 32 \
+--anchors-path ${proj_path}/experiments/anchor_embeddings/llama2-13b_mistral-7b_1000000anchors_seed1_bug.pt \
+--embedding-projection-path ${proj_path}/experiments//embedding_projection/EstimationEmbeddingProjection_${anchor_num}anchors_seed1.pt \
+--result_save_dir ${proj_path}/experiments/TriviaQA/${mode}/llama2-13b_mistral-7b_${anchor_num}anchors_seed${seed} \
+--sampling-anchor-num 20000 \
+--ensemble_weight 0.8 0.2 \
 --run_mode ${mode} 
