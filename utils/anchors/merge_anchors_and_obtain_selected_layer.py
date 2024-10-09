@@ -2,6 +2,7 @@ import torch
 import os
 from tqdm import tqdm
 import pdb
+import re
 
 anchor_dir = "/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/"
 anchor_prefix = "llama2-13b_mistral-7b_1000000anchors_seed1"
@@ -11,7 +12,7 @@ layer_pair = [40, 32]
 
 output_path = f"{anchor_dir}/{anchor_prefix}_layer{'-'.join([str(i) for i in layer_pair])}.pt"
 
-files = [f for f in os.listdir(anchor_dir) if f.startswith(anchor_prefix) and f != anchor_prefix + '.pt']
+files = [f for f in os.listdir(anchor_dir) if re.match(fr"^{re.escape(anchor_prefix)}_\d+\.pt$", f)]
 files = sorted(files)
 
 states = []
