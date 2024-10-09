@@ -1,6 +1,7 @@
 import torch
 import os
 from tqdm import tqdm
+import pdb
 
 anchor_dir = "/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/"
 anchor_prefix = "llama2-13b_mistral-7b_1000000anchors_seed1"
@@ -18,7 +19,11 @@ for file in tqdm(files):
     state = torch.load(f"{anchor_dir}/{file}", map_location=torch.device('cpu'))
     single_layer_state = {}
     for index, model in enumerate(models):
-        single_layer_state[model] = state[model][layer_pair[index]]
+        try:
+            assert len(state[model][layer_pair[index]].shape) == 2
+            single_layer_state[model] = state[model][layer_pair[index]]
+        except Exception:
+            pdb.set_trace()
     states.append(single_layer_state)
 
 res_state = {}
