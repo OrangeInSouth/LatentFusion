@@ -40,6 +40,7 @@ if __name__ == "__main__":
 
     # anchor_embeddings_path = "/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/llama2-13b_mistral-7b_200000anchors_seed1_layer40-32.pt"
     anchor_embeddings_path = f"/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/llama2-13b_mistral-7b_filtered{anchor_num}anchors_seed{seed}_layer40-32.pt"
+    anchor_embeddings_path = f"/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/llama2-13b_mistral-7b{anchor_num}anchors_seed{seed}_layer40-32.pt"
     save_dir = "/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/embedding_projection"
     output_path = f"{save_dir}/EstimationEmbeddingProjection_filtered{anchor_num}anchors_seed{seed}.pt"
 

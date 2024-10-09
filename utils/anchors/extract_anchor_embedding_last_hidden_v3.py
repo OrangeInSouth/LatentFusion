@@ -83,6 +83,7 @@ def extract_anchor_embeddings(model_name_list, data, output_dir, anchor_num=4000
 
         # 5. model forward to obtain the representation
         with torch.no_grad():
+            # (1) obtain all models' hidden states and predicted tokens
             for i in range(model_num):
                 tokenizer = tokenizer_list[i]
                 model = model_list[i]
@@ -106,6 +107,9 @@ def extract_anchor_embeddings(model_name_list, data, output_dir, anchor_num=4000
                 # print(torch.cuda.memory_allocated("cuda:0")/(1024**2), "MB")
                 anchor_embeddings_list[i].append(selected_hidden_states)
                 torch.cuda.empty_cache()
+            # (2) filter sampled token position again according to whether predicting the same token
+
+            # (3) withdraw the embedding of the sample token
 
         count += len(selected_positions)
         batch_count += len(selected_positions)
