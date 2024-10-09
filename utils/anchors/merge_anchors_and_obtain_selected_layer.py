@@ -13,7 +13,7 @@ def parse_args():
 
     # Add arguments with default values
     parser.add_argument('--models', nargs='+', default=["llama2-13b", "mistral-7b"], help="models, list of strings")
-    parser.add_argument('--layer-pair', nargs='+', default=[40, 32], help="models, list of strings")
+    parser.add_argument('--layer-pair', nargs='+', default=[40, 32], help="aligned layers, list of int")
 
     # Parse the arguments
     args = parser.parse_args()
