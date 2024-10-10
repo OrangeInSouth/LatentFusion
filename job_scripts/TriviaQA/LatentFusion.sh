@@ -12,7 +12,7 @@
 source ~/.bashrc
 
 conda activate ychuang
-export CUDA_VISIBLE_DEVICES=7
+export CUDA_VISIBLE_DEVICES=0
 mode=dev
 seed=1
 anchor_num=1000000
