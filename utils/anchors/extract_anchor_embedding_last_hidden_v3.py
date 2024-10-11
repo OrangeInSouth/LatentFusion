@@ -97,7 +97,10 @@ def extract_anchor_embeddings(model_name_list, data, output_dir, anchor_num=4000
                                 "return_dict": True, 
                                 "output_hidden_states": True}
                 
-                model_output = model(**model_input) # a tuple of (L+1) tensors, each one is (B, T, d)
+                try:
+                    model_output = model(**model_input) # a tuple of (L+1) tensors, each one is (B, T, d)
+                except Exception:
+                    break
                 interal_hidden_states = model_output['hidden_states']
                 logits = model_output['logits'].squeeze(dim=0)
                 pred_tokens = tokenizer.convert_ids_to_tokens(logits.argmax(dim=-1))
@@ -107,6 +110,8 @@ def extract_anchor_embeddings(model_name_list, data, output_dir, anchor_num=4000
                 pred_tokens_per_model.append(pred_tokens)
                 hidden_states_per_model.append([layer_states.squeeze(dim=0) for layer_states in interal_hidden_states])
 
+            if len(pred_tokens_per_model) < model_num:
+                continue
             # (2) filter sampled token position again according to whether predicting the same token
             position_pair_list = [pp for pp in position_pair_list if output_same_token(pred_tokens_per_model[0][pp[0]], pred_tokens_per_model[1][pp[1]])]
             # (3) withdraw the embedding of the sample token
@@ -198,7 +203,7 @@ if __name__ == "__main__":
     data_path = "/share/home/fengxiaocheng/ychuang/Downloads/minipile/"
 
     # Load and truncate the data
-    dataset = [" ".join(i['text'].split()[:80]) for i in load_from_disk(data_path)["train"]]
+    dataset = [" ".join(i['text'].split()[:100]) for i in load_from_disk(data_path)["train"]]
 
     output_dir = f"{proj_path}/experiments/anchor_embeddings_v3/"
 
