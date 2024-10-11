@@ -38,7 +38,8 @@ cd ${proj_path}
 
 for weight1 in 0.0001 0.8 0.7 0.5; do
 
-    weight2=$((1.0-$weight1))
+    # weight2=$((1.0-$weight1))
+    weight2=$(echo "scale=4; 1.0 - $weight1" | bc)
 
     python src/main.py --config confs/TriviaQA/llama2-13b_mistral-7b.json \
     --models llama2-13b mistral-7b \
