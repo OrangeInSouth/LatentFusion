@@ -42,9 +42,9 @@ if __name__ == "__main__":
 
     # anchor_embeddings_path = "/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/llama2-13b_mistral-7b_200000anchors_seed1_layer40-32.pt"
     # anchor_embeddings_path = f"/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/llama2-13b_mistral-7b_filtered{anchor_num}anchors_seed{seed}_layer40-32.pt"
-    anchor_embeddings_path = f"/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings_v3/llama2-13b_mistral-7b_{str(anchor_num)}anchors_seed{seed}_layer{'-'.join(layer_pair)}.pt"
+    anchor_embeddings_path = f"/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings_v3/llama2-13b_mistral-7b_{anchor_num}anchors_seed{seed}_layer{'-'.join([str(i) for i in layer_pair])}.pt"
     save_dir = "/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/embedding_projection"
-    output_path = f"{save_dir}/EstimationEmbeddingProjection_{str(anchor_num)}anchors-v3_seed{seed}_layer{'-'.join(layer_pair)}.pt"
+    output_path = f"{save_dir}/EstimationEmbeddingProjection_{anchor_num}anchors-v3_seed{seed}_layer{'-'.join([str(i) for i in layer_pair])}.pt"
 
     state = torch.load(anchor_embeddings_path)
     # src_embeddings = state["mistral-7b"][32]
