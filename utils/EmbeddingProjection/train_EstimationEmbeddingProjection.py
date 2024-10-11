@@ -49,7 +49,7 @@ if __name__ == "__main__":
     anchor_embeddings_dir = f"/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/"
     anchor_embeddings_path = f"{anchor_embeddings_dir}/{tgt_model}_{src_model}_{anchor_num}anchors_seed{seed}_layer{'-'.join([str(i) for i in layer_pair])}.pt"
     if not os.path.exists(anchor_embeddings_path):
-        anchor_embeddings_path = f"{anchor_embeddings_dir}/{src_model}_{tgt_model}_{anchor_num}anchors_seed{seed}_layer{'-'.join([str(i) for i in layer_pair])}.pt"
+        anchor_embeddings_path = f"{anchor_embeddings_dir}/{src_model}_{tgt_model}_{anchor_num}anchors_seed{seed}_layer{layer_pair[1]}-{layer_pair[0]}.pt"
         if not os.path.exists(anchor_embeddings_path):
             raise Exception(f"Anchor Not Existed: {anchor_embeddings_path}")
 
