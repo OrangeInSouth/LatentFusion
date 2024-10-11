@@ -2,6 +2,7 @@ import json
 import random
 import os
 import pdb
+import argparse
 import torch
 import sys
 proj_path = "/share/home/fengxiaocheng/ychuang/LatentFusion"
@@ -177,15 +178,29 @@ def extract_anchor_embeddings(model_name_list, data, output_dir, anchor_num=4000
 def output_same_token(t1, t2):
     return t1 in t2 or t2 in t1
 
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="Parse hyperparameters")
+
+    # Add arguments with default values
+    parser.add_argument('--anchor-num', type=int, default=1000000, help='Number of Anchors used to estimation the embedding projection.')
+    # parser.add_argument('--seed', type=int, default=1, help='Random seed.')
+
+    # Parse the arguments
+    args = parser.parse_args()
+    return args
+
 if __name__ == "__main__":
     # data_path = "/data/home/cpfu/ychuang/reimplement_deepen/datasets/TriviaQA/wikipedia-dev-1900.jsonl"
     # data = read_multiline_json(data_path)
     # data = [i["question"] for i in data]
 
     # Load data and perform truncate
+    args = parse_args()
+    anchor_num = args.anchor_num
     data_path = "/share/home/fengxiaocheng/ychuang/Downloads/minipile/"
     dataset = [" ".join(i['text'].split()[:100]) for i in load_from_disk(data_path)["train"]]
 
     output_dir = f"{proj_path}/experiments/anchor_embeddings_v3/"
 
-    extract_anchor_embeddings(["llama2-13b", "mistral-7b"], dataset, output_dir, anchor_num=1000000)
+    extract_anchor_embeddings(["llama2-13b", "mistral-7b"], dataset, output_dir, anchor_num=anchor_num)
