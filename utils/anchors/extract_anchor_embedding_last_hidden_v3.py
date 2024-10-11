@@ -186,6 +186,6 @@ if __name__ == "__main__":
     data_path = "/share/home/fengxiaocheng/ychuang/Downloads/minipile/"
     dataset = [" ".join(i['text'].split()[:100]) for i in load_from_disk(data_path)["train"]]
 
-    output_dir = f"{proj_path}/experiments/anchor_embeddings/"
+    output_dir = f"{proj_path}/experiments/anchor_embeddings_v3/"
 
     extract_anchor_embeddings(["llama2-13b", "mistral-7b"], dataset, output_dir, anchor_num=1000000)
