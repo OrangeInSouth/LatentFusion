@@ -196,7 +196,9 @@ if __name__ == "__main__":
     args = parse_args()
     anchor_num = args.anchor_num
     data_path = "/share/home/fengxiaocheng/ychuang/Downloads/minipile/"
-    dataset = [" ".join(i['text'].split()[:100]) for i in load_from_disk(data_path)["train"]]
+
+    # Load and truncate the data
+    dataset = [" ".join(i['text'].split()[:80]) for i in load_from_disk(data_path)["train"]]
 
     output_dir = f"{proj_path}/experiments/anchor_embeddings_v3/"
 
