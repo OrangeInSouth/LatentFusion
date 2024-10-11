@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH -J LatentFusion-TriviaQA-Dev                               # 作业名为 test
-#SBATCH -o t                          # stdout 重定向到 test.out
+#SBATCH -o /share/home/fengxiaocheng/ychuang/LatentFusion/job_scripts/TriviaQA/test.out                          # stdout 重定向到 test.out
 #SBATCH -e /share/home/fengxiaocheng/ychuang/LatentFusion/job_scripts/TriviaQA/test.err                           # stderr 重定向到 test.err
 #SBATCH -p gpu02                            # 作业提交的分区为 compute
 #SBATCH -N 1                                  # 作业申请 1 个节点
@@ -15,9 +15,11 @@ conda activate ychuang
 export CUDA_VISIBLE_DEVICES=7
 mode=dev
 seed=1
-anchor_num=200000
-tgt_layer=40
-src_layer=32
+anchor_num=1000000
+tgt_layer=32
+src_layer=40
+tgt_model="mistral-7b"
+src_mdoel="llama2-13b"
 
 proj_path=/share/home/fengxiaocheng/ychuang/LatentFusion
 export PYTHONPATH=${proj_path}
@@ -42,8 +44,8 @@ for weight1 in 0.0001 0.8 0.7 0.5; do
     --models llama2-13b mistral-7b \
     --layer-alignment $tgt_layer $src_layer \
     --anchors-path ${proj_path}/experiments/anchor_embeddings/llama2-13b_mistral-7b_1000000anchors_seed1_bug.pt \
-    --embedding-projection-path ${proj_path}/experiments//embedding_projection/EstimationEmbeddingProjection_${anchor_num}anchors-v3_seed1_layer${tgt_layer}-${src_layer}.pt \
-    --result_save_dir ${proj_path}/experiments/TriviaQA/${mode}/llama2-13b_mistral-7b_${anchor_num}anchors-v3_seed${seed} \
+    --embedding-projection-path ${proj_path}/experiments//embedding_projection/${tgt_model}_${src_mdoel}/EstimationEmbeddingProjection_${anchor_num}anchors_seed1_layer${tgt_layer}-${src_layer}.pt \
+    --result_save_dir ${proj_path}/experiments/TriviaQA/${mode}/${tgt_model}_${src_mdoel}_${anchor_num}anchors_seed${seed} \
     --sampling-anchor-num 20000 \
     --ensemble_weight $weight1 $weight2 \
     --run_mode ${mode} 
