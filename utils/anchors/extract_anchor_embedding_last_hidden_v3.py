@@ -97,25 +97,23 @@ def extract_anchor_embeddings(model_name_list, data, output_dir, anchor_num=4000
                                 "return_dict": True, 
                                 "output_hidden_states": True}
                 
-                # print(torch.cuda.memory_allocated("cuda:0")/(1024**2), "MB")
-                pdb.set_trace()
                 model_output = model(**model_input) # a tuple of (L+1) tensors, each one is (B, T, d)
                 interal_hidden_states = model_output['hidden_states']
-                logits = model_output['logits'][0]
+                logits = model_output['logits'].squeeze(dim=0)
                 pred_tokens = tokenizer.convert_ids_to_tokens(logits.argmax(dim=-1))
                 # selected_pred_tokens = pred_tokens[selected_positions]
                 # selected_hidden_states = [layer_output[0][selected_positions].clone() for layer_output in interal_hidden_states] # a tuple of (L+1) tensors, each one is (d) 
 
                 pred_tokens_per_model.append(pred_tokens)
-                hidden_states_per_model.append(interal_hidden_states)
+                hidden_states_per_model.append([layer_states.squeeze(dim=0) for layer_states in interal_hidden_states])
 
             # (2) filter sampled token position again according to whether predicting the same token
             position_pair_list = [pp for pp in position_pair_list if output_same_token(pred_tokens_per_model[0][pp[0]], pred_tokens_per_model[1][pp[1]])]
-
+            pdb.set_trace()
             # (3) withdraw the embedding of the sample token
             for i in range(model_num):
                 selected_positions = [p[i] for p in position_pair_list]
-                anchor_embeddings_list[i].append([layer_output[selected_positions].squeeze(dim=0).clone() for layer_output in hidden_states_per_model[i]])
+                anchor_embeddings_list[i].append([layer_output[selected_positions].clone() for layer_output in hidden_states_per_model[i]])
             
             torch.cuda.empty_cache()
 
