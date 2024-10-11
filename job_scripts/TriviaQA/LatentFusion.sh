@@ -12,10 +12,12 @@
 source ~/.bashrc
 
 conda activate ychuang
-export CUDA_VISIBLE_DEVICES=0
+export CUDA_VISIBLE_DEVICES=7
 mode=dev
 seed=1
-anchor_num=1000000
+anchor_num=200000
+tgt_layer=40
+src_layer=32
 
 proj_path=/share/home/fengxiaocheng/ychuang/LatentFusion
 export PYTHONPATH=${proj_path}
@@ -32,16 +34,16 @@ cd ${proj_path}
 # --ensemble_weight 0.001 0.999 \
 # --run_mode ${mode} 
 
-for weight1 in 0.0001; do
+for weight1 in 0.0001 0.8 0.7 0.5; do
 
     weight2=$((1.0-$weight1))
 
     python src/main.py --config confs/TriviaQA/llama2-13b_mistral-7b.json \
     --models llama2-13b mistral-7b \
-    --layer-alignment 35 27 \
+    --layer-alignment $tgt_layer $src_layer \
     --anchors-path ${proj_path}/experiments/anchor_embeddings/llama2-13b_mistral-7b_1000000anchors_seed1_bug.pt \
-    --embedding-projection-path ${proj_path}/experiments//embedding_projection/EstimationEmbeddingProjection_${anchor_num}anchors_seed1_layer6-5.pt \
-    --result_save_dir ${proj_path}/experiments/TriviaQA/${mode}/llama2-13b_mistral-7b_${anchor_num}anchors_seed${seed} \
+    --embedding-projection-path ${proj_path}/experiments//embedding_projection/EstimationEmbeddingProjection_${anchor_num}anchors-v3_seed1_layer${tgt_layer}-${src_layer}.pt \
+    --result_save_dir ${proj_path}/experiments/TriviaQA/${mode}/llama2-13b_mistral-7b_${anchor_num}anchors-v3_seed${seed} \
     --sampling-anchor-num 20000 \
     --ensemble_weight $weight1 $weight2 \
     --run_mode ${mode} 

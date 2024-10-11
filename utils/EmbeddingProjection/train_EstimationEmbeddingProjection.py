@@ -24,6 +24,8 @@ def parse_args():
     parser.add_argument('--anchor-num', type=int, default=1000000, help='Number of Anchors used to estimation the embedding projection.')
     parser.add_argument('--seed', type=int, default=1, help='Random seed.')
     parser.add_argument('--layer-pair', nargs='+', default=[40, 32], help="aligned layers, list of int")
+    parser.add_argument('--src-model', type=str, default="mistral-7b")
+    parser.add_argument('--tgt-model', type=str, default="llama2-13b")
 
     # Parse the arguments
     args = parser.parse_args()
@@ -37,20 +39,23 @@ if __name__ == "__main__":
     anchor_num = args.anchor_num
     seed = args.seed
     layer_pair = args.layer_pair
-
+    src_model = args.src_model
+    tgt_model = args.tgt_model
     torch.manual_seed(seed)
 
     # anchor_embeddings_path = "/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/llama2-13b_mistral-7b_200000anchors_seed1_layer40-32.pt"
     # anchor_embeddings_path = f"/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/llama2-13b_mistral-7b_filtered{anchor_num}anchors_seed{seed}_layer40-32.pt"
-    anchor_embeddings_path = f"/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings_v3/llama2-13b_mistral-7b_{anchor_num}anchors_seed{seed}_layer{'-'.join([str(i) for i in layer_pair])}.pt"
-    save_dir = "/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/embedding_projection"
-    output_path = f"{save_dir}/EstimationEmbeddingProjection_{anchor_num}anchors-v3_seed{seed}_layer{'-'.join([str(i) for i in layer_pair])}.pt"
+    anchor_embeddings_path = f"/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/llama2-13b_mistral-7b_{anchor_num}anchors_seed{seed}_layer{'-'.join([str(i) for i in layer_pair])}.pt"
+    save_dir = f"/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/embedding_projection/{src_model}-to-{tgt_model}"
+    os.makedirs(save_dir, exist_ok=True)
+
+    output_path = f"{save_dir}/EstimationEmbeddingProjection_{anchor_num}anchors_seed{seed}_layer{'-'.join([str(i) for i in layer_pair])}.pt"
 
     state = torch.load(anchor_embeddings_path)
     # src_embeddings = state["mistral-7b"][32]
     # tgt_embeddings = state["llama2-13b"][40]
-    src_embeddings = state["mistral-7b"]
-    tgt_embeddings = state["llama2-13b"]
+    src_embeddings = state[src_model]
+    tgt_embeddings = state[tgt_model]
 
     # 1. split the dataset
     dataset = TensorDataset(src_embeddings, tgt_embeddings)
