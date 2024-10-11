@@ -398,6 +398,7 @@ class EstimationEmbeddingProjection(EmbeddingProjection):
             "transformation_weights": self.transformation_weights
         }
         torch.save(states, checkpoint_name)
+        print(f"Embedding Projection is saved: {checkpoint_name}")
 
     def load(self, checkpoint_path, device=None):
         if device is None:

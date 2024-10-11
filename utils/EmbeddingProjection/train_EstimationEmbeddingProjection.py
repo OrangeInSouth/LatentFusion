@@ -45,8 +45,14 @@ if __name__ == "__main__":
 
     # anchor_embeddings_path = "/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/llama2-13b_mistral-7b_200000anchors_seed1_layer40-32.pt"
     # anchor_embeddings_path = f"/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/llama2-13b_mistral-7b_filtered{anchor_num}anchors_seed{seed}_layer40-32.pt"
-    anchor_embeddings_path = f"/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/llama2-13b_mistral-7b_{anchor_num}anchors_seed{seed}_layer{'-'.join([str(i) for i in layer_pair])}.pt"
-    save_dir = f"/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/embedding_projection/{src_model}-to-{tgt_model}"
+    anchor_embeddings_dir = f"/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/"
+    anchor_embeddings_path = f"{anchor_embeddings_dir}/{tgt_model}_{src_model}_{anchor_num}anchors_seed{seed}_layer{'-'.join([str(i) for i in layer_pair])}.pt"
+    if not os.path.exists(anchor_embeddings_path):
+        anchor_embeddings_path = f"{anchor_embeddings_dir}/{src_model}_{tgt_model}_{anchor_num}anchors_seed{seed}_layer{'-'.join([str(i) for i in layer_pair])}.pt"
+        if not os.path.exists(anchor_embeddings_path):
+            raise Exception(f"Anchor Not Existed: {anchor_embeddings_path}")
+
+    save_dir = f"/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/embedding_projection/{tgt_model}_{src_model}"
     os.makedirs(save_dir, exist_ok=True)
 
     output_path = f"{save_dir}/EstimationEmbeddingProjection_{anchor_num}anchors_seed{seed}_layer{'-'.join([str(i) for i in layer_pair])}.pt"
