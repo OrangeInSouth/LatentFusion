@@ -109,7 +109,6 @@ def extract_anchor_embeddings(model_name_list, data, output_dir, anchor_num=4000
 
             # (2) filter sampled token position again according to whether predicting the same token
             position_pair_list = [pp for pp in position_pair_list if output_same_token(pred_tokens_per_model[0][pp[0]], pred_tokens_per_model[1][pp[1]])]
-            pdb.set_trace()
             # (3) withdraw the embedding of the sample token
             for i in range(model_num):
                 selected_positions = [p[i] for p in position_pair_list]
