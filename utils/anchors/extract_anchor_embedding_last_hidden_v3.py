@@ -84,6 +84,9 @@ def extract_anchor_embeddings(model_name_list, data, output_dir, anchor_num=4000
         # 5. model forward to obtain the representation
         with torch.no_grad():
             # (1) obtain all models' hidden states and predicted tokens
+            hidden_states_per_model = []
+            pred_tokens_per_model = []
+
             for i in range(model_num):
                 tokenizer = tokenizer_list[i]
                 model = model_list[i]
@@ -99,17 +102,21 @@ def extract_anchor_embeddings(model_name_list, data, output_dir, anchor_num=4000
                 interal_hidden_states = model_output['hidden_states']
                 logits = model_output['logits'][0]
                 pred_tokens = tokenizer.convert_ids_to_tokens(logits.argmax(dim=-1))
+                # selected_pred_tokens = pred_tokens[selected_positions]
+                # selected_hidden_states = [layer_output[0][selected_positions].clone() for layer_output in interal_hidden_states] # a tuple of (L+1) tensors, each one is (d) 
 
-                # print(torch.cuda.memory_allocated("cuda:0")/(1024**2), "MB")
-                
-                selected_hidden_states = [layer_output[0][selected_positions].clone() for layer_output in interal_hidden_states] # a tuple of (L+1) tensors, each one is (d) 
-                del interal_hidden_states
-                # print(torch.cuda.memory_allocated("cuda:0")/(1024**2), "MB")
-                anchor_embeddings_list[i].append(selected_hidden_states)
-                torch.cuda.empty_cache()
+                pred_tokens_per_model.append(pred_tokens)
+                hidden_states_per_model.append(interal_hidden_states)
+
             # (2) filter sampled token position again according to whether predicting the same token
+            position_pair_list = [pp for pp in position_pair_list if output_same_token(pred_tokens_per_model[0][pp[0]], pred_tokens_per_model[1][pp[1]])]
 
             # (3) withdraw the embedding of the sample token
+            for i in range(model_num):
+                selected_positions = [p[i] for p in position_pair_list]
+                anchor_embeddings_list[i].append([layer_output[selected_positions].squeeze(dim=0).clone() for layer_output in hidden_states_per_model[i]])
+            
+            torch.cuda.empty_cache()
 
         count += len(selected_positions)
         batch_count += len(selected_positions)
