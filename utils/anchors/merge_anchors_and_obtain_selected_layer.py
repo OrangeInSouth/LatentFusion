@@ -5,8 +5,7 @@ import pdb
 import re
 import argparse
 
-anchor_dir = "/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/"
-anchor_prefix = "llama2-13b_mistral-7b_1000000anchors_seed1"
+anchor_dir = "/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings_v3/"
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Parse hyperparameters")
@@ -14,6 +13,7 @@ def parse_args():
     # Add arguments with default values
     parser.add_argument('--models', nargs='+', default=["llama2-13b", "mistral-7b"], help="models, list of strings")
     parser.add_argument('--layer-pair', nargs='+', default=[40, 32], help="aligned layers, list of int")
+    parser.add_argument('--anchor-num', type=int, default=1000000, help='Number of Anchors used to estimation the embedding projection.')
 
     # Parse the arguments
     args = parser.parse_args()
@@ -23,7 +23,9 @@ args = parse_args()
 
 models = args.models
 layer_pair = [int(i) for i in args.layer_pair]
+anchor_num = args.anchor_num
 
+anchor_prefix = f"{'_'.join(models)}_{anchor_num}anchors_seed1"
 output_path = f"{anchor_dir}/{anchor_prefix}_layer{'-'.join([str(i) for i in layer_pair])}.pt"
 
 files = [f for f in os.listdir(anchor_dir) if re.match(fr"^{re.escape(anchor_prefix)}_\d+\.pt$", f)]
