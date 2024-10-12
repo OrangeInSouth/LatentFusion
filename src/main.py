@@ -82,7 +82,7 @@ if __name__ == '__main__':
 
     # added by Yichong
     models = args.models
-    anchor_path = args.anchors_path
+    
     layer_alignment = [int(i) for i in args.layer_alignment]
     fuser_type = args.fuser
 
@@ -92,7 +92,6 @@ if __name__ == '__main__':
     l1_alpha = args.l1_alpha
 
     # For EmbeddingProjectionFuser
-    sampling_anchor_num = args.sampling_anchor_num
     embedding_projection_path = args.embedding_projection_path
     
     
@@ -163,8 +162,7 @@ if __name__ == '__main__':
 
     model_list = []
     tokenizer_list = []
-    anchor_embeds_list = []
-    anchor_embeds_dict = torch.load(anchor_path, map_location=device_list[0])
+    
     for index, model_name in enumerate(models):
         print(f"\nLoading {model_name}")
 
@@ -172,10 +170,14 @@ if __name__ == '__main__':
             AutoModelForCausalLM.from_pretrained(model_paths[model_name], device_map="auto", torch_dtype="auto").eval())
         tokenizer_list.append(
             AutoTokenizer.from_pretrained(model_paths[model_name], trust_remote_code=True))
-        anchor_embeds_list.append(
-            torch.stack(anchor_embeds_dict[model_name]).to(device_list[index]))
+        # anchor_embeds_list.append(
+        #     torch.stack(anchor_embeds_dict[model_name]).to(device_list[index]))
 
     if fuser_type == "RelativeFuser":
+        anchor_path = args.anchors_path
+        sampling_anchor_num = args.sampling_anchor_num
+        anchor_embeds_list = []
+        anchor_embeds_dict = torch.load(anchor_path, map_location=device_list[0])
         fuser = RelativeFuser(anchor_embeds_list, 
                                 model_list,
                                 ensembel_weights=ensemble_weight,
@@ -188,8 +190,6 @@ if __name__ == '__main__':
     elif fuser_type == "EmbeddingProjectionFuser":
         fuser = EmbeddingProjectionFuser(model_list, 
                                         layer_alignment, 
-                                        anchor_embeds_list, 
-                                        sampling_anchor_num,
                                         embedding_projection_path=embedding_projection_path,
                                         ensembel_weights=ensemble_weight)
     

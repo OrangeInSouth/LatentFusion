@@ -22,8 +22,6 @@ class EmbeddingProjectionFuser():
     def __init__(self,  
                  model_list,
                  layer_alignment,
-                 anchor_embeddings_list,
-                 anchor_num,
                  embedding_projection_path = "",
                  device_compute="cuda:0",
                  ensembel_weights=None):
@@ -31,9 +29,6 @@ class EmbeddingProjectionFuser():
         anchor_embeddings_list: with shape (layer_num + 1, anchor_num, dimension)
         """
         model_num = len(model_list)
-
-        anchor_embeddings_list = [anchor_embeddings_list[i][layer_alignment[i]].to(device_compute) for i in range(model_num)]
-        self.anchor_embeddings_list = anchor_embeddings_list
 
         self.model_list = model_list
         self.device_compute = device_compute
@@ -54,17 +49,17 @@ class EmbeddingProjectionFuser():
         self.embedding_projection = embedding_projection
 
         # 3. Evaluate the optimal transformation matrix
-        print("Misalignmen of Baseline:")
-        print(((self.anchor_embeddings_list[0][torch.randperm(len(self.anchor_embeddings_list[0]))] - self.anchor_embeddings_list[0]).abs()).mean())
-        print("Optimal Misalignment of Optimal Transformation")
+        # print("Misalignmen of Baseline:")
+        # print(((self.anchor_embeddings_list[0][torch.randperm(len(self.anchor_embeddings_list[0]))] - self.anchor_embeddings_list[0]).abs()).mean())
+        # print("Optimal Misalignment of Optimal Transformation")
 
-        aligned_embedding = self.transform_to_main_space(self.anchor_embeddings_list[1], 1)
-        print(((self.anchor_embeddings_list[0] - aligned_embedding).abs()).mean())
+        # aligned_embedding = self.transform_to_main_space(self.anchor_embeddings_list[1], 1)
+        # print(((self.anchor_embeddings_list[0] - aligned_embedding).abs()).mean())
 
-        col = 1000
-        compare_histogram(self.anchor_embeddings_list[0][:,col], aligned_embedding[:,col], 15)
-        misalignment = (aligned_embedding - self.anchor_embeddings_list[0]).abs().mean()
-        print(f"Mean Misglignment: {misalignment}")
+        # col = 1000
+        # compare_histogram(self.anchor_embeddings_list[0][:,col], aligned_embedding[:,col], 15)
+        # misalignment = (aligned_embedding - self.anchor_embeddings_list[0]).abs().mean()
+        # print(f"Mean Misglignment: {misalignment}")
         # print("Msialignment Distribution:")
         # print_histogram(misalignment, 10)
         
