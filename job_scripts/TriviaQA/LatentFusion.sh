@@ -19,7 +19,7 @@ anchor_num=1000000
 tgt_layer=32
 src_layer=40
 tgt_model="mistral-7b"
-src_mdoel="llama2-13b"
+src_model="llama2-13b"
 
 proj_path=/share/home/fengxiaocheng/ychuang/LatentFusion
 export PYTHONPATH=${proj_path}
