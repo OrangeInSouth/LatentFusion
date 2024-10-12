@@ -64,13 +64,15 @@ class DeepEnsemblerGenerator():
                 hidden_state_list[index] = torch.mm(alignment_matrix.T, hidden_state_list[index])
             # 3. 表示融合
             # 0. 加了一步操作，只更新最后面的10个token
+            pdb.set_trace()
             changed_token_num = 10
             unchanged_main_token_state = hidden_state_list[0][:-changed_token_num]
             hidden_state_list = [i[-changed_token_num:].clone().detach() for i in hidden_state_list]
             
             aggregated_hidden_state = self.ensembler.fuse(hidden_state_list)
 
-            aggregated_hidden_state = torch.cat([unchanged_main_token_state, aggregated_hidden_state], dim=0)
+            if len(unchanged_main_token_state) > 0:
+                aggregated_hidden_state = torch.cat([unchanged_main_token_state, aggregated_hidden_state], dim=0)
 
             aggregated_hidden_state = aggregated_hidden_state.unsqueeze(dim=0)  # (T, d) => (1, T, d)
             # 4. 主模型继续前向计算

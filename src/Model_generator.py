@@ -52,6 +52,7 @@ def forward_from_k_layer(model, input_ids, input_hidden_states, k, past_seen_tok
         "past_key_values": kv_cache,
         # "cache_position": torch.arange(seq_len).unsqueeze(dim=0).to(model.device),
     }
+    pdb.set_trace()
     # 调用模型获取logits
     outputs = model.forward_from_k_layer(**model_inputs)
     logits = outputs.logits[:, -1, :]
