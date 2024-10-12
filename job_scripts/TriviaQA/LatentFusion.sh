@@ -36,7 +36,7 @@ cd ${proj_path}
 # --ensemble_weight 0.001 0.999 \
 # --run_mode ${mode} 
 
-for weight1 in 0.0001 0.8 0.7 0.5; do
+for weight1 in 0.0001 ; do  # 0.8 0.7 0.5
 
     # weight2=$((1.0-$weight1))
     weight2=$(echo "scale=4; 1.0 - $weight1" | bc)

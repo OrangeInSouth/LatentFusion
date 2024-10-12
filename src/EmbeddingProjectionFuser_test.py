@@ -32,7 +32,6 @@ class EmbeddingProjectionFuser():
 
         self.model_list = model_list
         self.device_compute = device_compute
-        self.anchor_num = anchor_num
 
         if ensembel_weights is None:
             ensembel_weights = [1 / model_num] * model_num
