@@ -188,6 +188,7 @@ if __name__ == '__main__':
                                 l1_alpha=l1_alpha,
                                 ensemble_weight=ensemble_weight)
     elif fuser_type == "EmbeddingProjectionFuser":
+        sampling_anchor_num = args.sampling_anchor_num
         fuser = EmbeddingProjectionFuser(model_list, 
                                         layer_alignment, 
                                         embedding_projection_path=embedding_projection_path,
