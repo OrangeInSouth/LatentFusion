@@ -1210,6 +1210,7 @@ class MistralModel(MistralPreTrainedModel):
         if k == len(self.layers):
             hidden_states = self.norm(hidden_states)
             
+        pdb.set_trace()
         return hidden_states, next_decoder_cache
 
     # @add_start_docstrings_to_model_forward(MISTRAL_INPUTS_DOCSTRING)
