@@ -1,7 +1,7 @@
 from transformers import AutoTokenizer, MistralForCausalLM
-
-model = MistralForCausalLM.from_pretrained("mistralai/Mistral-7B-v0.1")
-tokenizer = AutoTokenizer.from_pretrained("mistralai/Mistral-7B-v0.1")
+from model_config import model_paths
+model = MistralForCausalLM.from_pretrained(model_paths["mistral-7b"])
+tokenizer = AutoTokenizer.from_pretrained(model_paths["mistral-7b"])
 
 prompt = "Hey, are you conscious? Can you talk to me?"
 inputs = tokenizer(prompt, return_tensors="pt")
