@@ -1002,7 +1002,7 @@ class MistralModel(MistralPreTrainedModel):
         elif self._attn_implementation == "sdpa" and not output_attentions:
             # output_attentions=True can not be supported when using SDPA, and we fall back on
             # the manual implementation that requires a 4D causal mask in all cases.
-            
+            pdb.set_trace()
             attention_mask = _prepare_4d_causal_attention_mask_for_sdpa(
                 attention_mask,
                 (batch_size, seq_length),
