@@ -1290,26 +1290,27 @@ class MistralModel(MistralPreTrainedModel):
             # the manual implementation that requires a 4D causal mask in all cases.
             # Modified by Eachan: 
             # pdb.set_trace()
-            
-            try:
-                if past_key_values_length + inputs_embeds.size(1) == 2 * attention_mask.size(-1):
-                    attention_mask = _prepare_4d_causal_attention_mask_for_sdpa(
-                        attention_mask,
-                        (batch_size, seq_length),
-                        inputs_embeds,
-                        0,
-                        sliding_window=self.config.sliding_window,
-                    )
-                else:
-                    attention_mask = _prepare_4d_causal_attention_mask_for_sdpa(
-                        attention_mask,
-                        (batch_size, seq_length),
-                        inputs_embeds,
-                        past_key_values_length,
-                        sliding_window=self.config.sliding_window,
-                    )
-            except Exception:
-                pdb.set_trace()
+
+            # try:
+            if past_key_values_length + inputs_embeds.size(1) != attention_mask.size(-1):
+                attention_mask = _prepare_4d_causal_attention_mask_for_sdpa(
+                    attention_mask,
+                    (batch_size, seq_length),
+                    inputs_embeds,
+                    0,
+                    sliding_window=self.config.sliding_window,
+                )
+            else:
+                attention_mask = _prepare_4d_causal_attention_mask_for_sdpa(
+                    attention_mask,
+                    (batch_size, seq_length),
+                    inputs_embeds,
+                    past_key_values_length,
+                    sliding_window=self.config.sliding_window,
+                )
+            # except Exception:
+            #     print()
+            #     pdb.set_trace()
         else:
             # 4d mask is passed through the layers
             attention_mask = _prepare_4d_causal_attention_mask(
