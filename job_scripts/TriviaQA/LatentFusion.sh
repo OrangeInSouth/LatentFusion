@@ -46,3 +46,4 @@ for weight1 in 0.9999 0.8 0.7 0.6 0.5 ; do  #
     gpu_id=$(( (gpu_id + 1) % gpu_count ))
 done
 
+wait
