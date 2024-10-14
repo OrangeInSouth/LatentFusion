@@ -6,13 +6,13 @@
 #SBATCH -N 1                                  # 作业申请 1 个节点
 #SBATCH -t 8:00:00                            # 任务运行的最长时间为 1 小时
 ##SBATCH -w gpu02                             # 指定运行作业的节点是 gpu06，若不填写系统自动分配节点
-#SBATCH --gres=gpu:1           # 申请 1 卡 A100 80GB，如果只申请CPU可以删除本行
+#SBATCH --gres=gpu:5           # 申请 1 卡 A100 80GB，如果只申请CPU可以删除本行
 #SBATCH --cpus-per-task=8
 
 source ~/.bashrc
 
 conda activate ychuang
-export CUDA_VISIBLE_DEVICES=0
+
 mode=dev
 seed=1
 anchor_num=1000000
@@ -26,21 +26,13 @@ export PYTHONPATH=${proj_path}
 cd ${proj_path}
 
 
-# python src/main.py --config confs/TriviaQA/llama2-13b_mistral-7b.json \
-# --models llama2-13b mistral-7b \
-# --layer-alignment 6 5 \
-# --anchors-path ${proj_path}/experiments/anchor_embeddings/llama2-13b_mistral-7b_1000000anchors_seed1_bug.pt \
-# --embedding-projection-path ${proj_path}/experiments//embedding_projection/EstimationEmbeddingProjection_${anchor_num}anchors_seed1_layer6-5.pt \
-# --result_save_dir ${proj_path}/experiments/TriviaQA/${mode}/llama2-13b_mistral-7b_${anchor_num}anchors_seed${seed} \
-# --sampling-anchor-num 20000 \
-# --ensemble_weight 0.001 0.999 \
-# --run_mode ${mode} 
-
-for weight1 in 0.0001 ; do  # 0.8 0.7 0.5
+gpu_count=5
+gpu_id=0  # 初始化第一个GPU
+for weight1 in 0.9999 0.8 0.7 0.6 0.5 ; do  # 
 
     # weight2=$((1.0-$weight1))
     weight2=$(echo "scale=4; 1.0 - $weight1" | bc)
-
+    export CUDA_VISIBLE_DEVICES=$gpu_id
     python src/main.py --config confs/TriviaQA/llama2-13b_mistral-7b.json \
     --models ${tgt_model} ${src_model} \
     --layer-alignment $tgt_layer $src_layer \
@@ -50,5 +42,6 @@ for weight1 in 0.0001 ; do  # 0.8 0.7 0.5
     --ensemble_weight $weight1 $weight2 \
     --run_mode ${mode} 
 
+    gpu_id=$(( (gpu_id + 1) % gpu_count ))
 done
 
