@@ -40,7 +40,7 @@ for weight1 in 0.9999 0.8 0.7 0.6 0.5 ; do  #
     --result_save_dir ${proj_path}/experiments/TriviaQA/${mode}/${tgt_model}_${src_model}_${anchor_num}anchors_seed${seed} \
     --sampling-anchor-num ${anchor_num} \
     --ensemble_weight $weight1 $weight2 \
-    --run_mode ${mode} 
+    --run_mode ${mode} &
 
     gpu_id=$(( (gpu_id + 1) % gpu_count ))
 done
