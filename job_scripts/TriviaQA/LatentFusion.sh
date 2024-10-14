@@ -33,6 +33,7 @@ for weight1 in 0.9999 0.8 0.7 0.6 0.5 ; do  #
     # weight2=$((1.0-$weight1))
     weight2=$(echo "scale=4; 1.0 - $weight1" | bc)
     export CUDA_VISIBLE_DEVICES=$gpu_id
+    echo $gpu_id
     python src/main.py --config confs/TriviaQA/llama2-13b_mistral-7b.json \
     --models ${tgt_model} ${src_model} \
     --layer-alignment $tgt_layer $src_layer \
