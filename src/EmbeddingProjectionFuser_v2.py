@@ -24,7 +24,8 @@ class EmbeddingProjectionFuser():
                  layer_alignment,
                  embedding_projection_path = "",
                  device_compute="cuda:0",
-                 ensembel_weights=None):
+                 ensembel_weights=None,
+                 subspace_ratio=1):
         """
         anchor_embeddings_list: with shape (layer_num + 1, anchor_num, dimension)
         """
@@ -36,6 +37,8 @@ class EmbeddingProjectionFuser():
         if ensembel_weights is None:
             ensembel_weights = [1 / model_num] * model_num
         self.ensembel_weights = torch.tensor(ensembel_weights).to(device_compute)
+        self.main_hidden_dim = self.model_list[0].embed_tokens.embedding_dim
+        self.neuron_level_ensemble_weights = self.ensembel_weights.unsqueeze(dim=-1).repeat([1, self.main_hidden_dim])
 
         # 1. Load the Embedding Projection
         # embedding_projection = DeepEmbeddingProjection(4096, 5120, 2048)
@@ -46,6 +49,20 @@ class EmbeddingProjectionFuser():
         embedding_projection.load(embedding_projection_path, device="cuda:0")
         # embedding_projection.load("/data/home/cpfu/ychuang/DeepEN_v0601_ychuang/experiments/embedding_projection/EstimationEmbeddingProjection.pt", device="cuda:0")
         self.embedding_projection = embedding_projection
+
+        # Modify neuron-level ensemble weights
+        pdb.set_trace()
+        selected_neuron_indices = torch.zeros_like(self.neuron_level_ensemble_weights)
+        selected_neuron_indices[0] = 1  # Use all the neurons of the main model
+        alignment_scores = embedding_projection.get_alignment_scores()
+        assert len(alignment_scores) == main_hidden_dim
+        alignment_scores.topk(int(main_hidden_dim * subspace_ratio))[1]
+        print(f"Size of Subspace: {int(main_hidden_dim * subspace_ratio)}")
+        selected_neuron_indices[1][selected_neuron_indices] = 1
+        self.neuron_level_ensemble_weights = self.neuron_level_ensemble_weights * selected_neuron_indices
+        self.neuron_level_ensemble_weights /= self.neuron_level_ensemble_weights.sum(dim=0)
+        
+        # embedding_projection.get_alignment_scores())
 
         # 3. Evaluate the optimal transformation matrix
         # print("Misalignmen of Baseline:")
@@ -77,7 +94,9 @@ class EmbeddingProjectionFuser():
         return: (T, A)
         """
         embed_list = torch.stack(embed_list)
-        embed_list = embed_list * self.ensembel_weights.unsqueeze(dim=-1).unsqueeze(dim=-1)
+        # embed_list = embed_list * self.ensembel_weights.unsqueeze(dim=-1).unsqueeze(dim=-1)
+        pdb.set_trace()
+        embed_list = embed_list * neuron_level_ensemble_weights
         aggregated_relative_embed = embed_list.sum(dim=0)
         return aggregated_relative_embed
 

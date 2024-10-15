@@ -14,7 +14,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from model_config import model_paths
 from src.RelativeFuser import RelativeFuser
-from src.EmbeddingProjectionFuser_test import EmbeddingProjectionFuser
+from src.EmbeddingProjectionFuser_v2 import EmbeddingProjectionFuser
 from src.DeepEnsemblerGenerator import DeepEnsemblerGenerator
 from src.instruction_generate import task_instruction_generate, demon_prompt_generate
 from utils.answer_extract import answer_extract
@@ -48,6 +48,7 @@ if __name__ == '__main__':
     ##   For EmbeddingProjectionFuser
     parser.add_argument('--sampling-anchor-num', type=int, default=1500, help="Number of anchors for learning embedding projection.")
     parser.add_argument('--embedding-projection-path', type=str, default="", help="Path to Embedding Projection")
+    parser.add_argument('--subspace-ratio', type=float, default=1, help="ratio of subspace against the whole latent space.")
     
 
 
@@ -189,10 +190,12 @@ if __name__ == '__main__':
                                 ensemble_weight=ensemble_weight)
     elif fuser_type == "EmbeddingProjectionFuser":
         sampling_anchor_num = args.sampling_anchor_num
+        subspace_ratio = args.subspace_ratio
         fuser = EmbeddingProjectionFuser(model_list, 
                                         layer_alignment, 
                                         embedding_projection_path=embedding_projection_path,
-                                        ensembel_weights=ensemble_weight)
+                                        ensembel_weights=ensemble_weight,
+                                        subspace_ratio=subspace_ratio)
     
     ensembler_generator = DeepEnsemblerGenerator(model_list=model_list, 
                                                  tokenizer_list=tokenizer_list,

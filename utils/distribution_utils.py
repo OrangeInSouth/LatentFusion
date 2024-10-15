@@ -7,14 +7,14 @@ import pdb
 def print_histogram(data, N):
     if isinstance(data, torch.Tensor):
         data = data.tolist()
-    min_v = min(data)
-    max_v = max(data)
+    min_v = min(data) - 1e-6
+    max_v = max(data) + 1e-6
     histogram = [0 for i in range(N)]
     chunk = (max_v - min_v) / N
     # pdb.set_trace()
     for i in tqdm(data):
         try:
-            histogram[int((i-min_v) // chunk)] += 1
+            histogram[int((i-min_v) / chunk)] += 1
         except Exception:
             print("遗留的BUG，没找到原因")
             pdb.set_trace()
