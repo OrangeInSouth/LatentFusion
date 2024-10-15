@@ -37,8 +37,7 @@ class EmbeddingProjectionFuser():
         if ensembel_weights is None:
             ensembel_weights = [1 / model_num] * model_num
         self.ensembel_weights = torch.tensor(ensembel_weights).to(device_compute)
-        pdb.set_trace()
-        self.main_hidden_dim = self.model_list[0].embed_tokens.embedding_dim
+        self.main_hidden_dim = self.model_list[0].model.embed_tokens.embedding_dim
         self.neuron_level_ensemble_weights = self.ensembel_weights.unsqueeze(dim=-1).repeat([1, self.main_hidden_dim])
 
         # 1. Load the Embedding Projection
