@@ -216,7 +216,7 @@ if __name__ == '__main__':
                                                 f'ensemble_lr{learning_rate}_learning_epochs_nums{learning_epochs_nums}_fuse{"-".join([str(i) for i in layer_alignment])}_beta{str(beta)}_p{str(p)}.jsonl')
         elif fuser_type == "EmbeddingProjectionFuser":
             result_file_path = os.path.join(result_save_dir,
-                                                f'EmbeddingProecjtionFuser_{sampling_anchor_num}anchors_fuse{"-".join([str(i) for i in layer_alignment])}')
+                                                f'EmbeddingProecjtionFuser_{sampling_anchor_num}anchors_fuse{"-".join([str(i) for i in layer_alignment])}_sub{subspace_ratio}')
             if len(set(ensemble_weight)) != 1:
                 result_file_path += "_" + "-".join([str(round(i, 4)) for i in ensemble_weight])
             result_file_path += ".jsonl"

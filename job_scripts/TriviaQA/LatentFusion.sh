@@ -33,6 +33,7 @@ for weight1 in 0.5; do  # 0.9999 0.0001
     # weight2=$((1.0-$weight1))
     weight2=$(echo "scale=4; 1.0 - $weight1" | bc)
     
+    # for sr in 0.9
     python src/main.py --config confs/TriviaQA/llama2-13b_mistral-7b.json \
     --models ${tgt_model} ${src_model} \
     --layer-alignment $tgt_layer $src_layer \
