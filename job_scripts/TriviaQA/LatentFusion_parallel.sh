@@ -28,9 +28,9 @@ cd ${proj_path}
 
 gpu_count=4
 gpu_id=0  # 初始化第一个GPU
-for weight1 in 0.5 ; do  # 
+for weight1 in 0.8 ; do  # 
 
-    for sr in 0.8 0.7 0.6 0.5; do
+    for sr in 0.5 0.6 0.7 0.8 0.9; do
 
         # weight2=$((1.0-$weight1))
         weight2=$(echo "scale=4; 1.0 - $weight1" | bc)

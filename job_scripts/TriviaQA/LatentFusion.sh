@@ -41,7 +41,7 @@ for weight1 in 0.5; do  # 0.9999 0.0001
     --result_save_dir ${proj_path}/experiments/TriviaQA/${mode}/${tgt_model}_${src_model}_${anchor_num}anchors_seed${seed} \
     --sampling-anchor-num ${anchor_num} \
     --ensemble_weight $weight1 $weight2 \
-    --subspace-ratio 0.9 \
+    --subspace-ratio 1 \
     --run_mode ${mode}
 
 done
