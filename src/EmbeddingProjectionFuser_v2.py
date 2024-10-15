@@ -60,6 +60,7 @@ class EmbeddingProjectionFuser():
         selected_neuron_indices[1][subspace_indices] = 1
         self.neuron_level_ensemble_weights = self.neuron_level_ensemble_weights * selected_neuron_indices
         self.neuron_level_ensemble_weights /= self.neuron_level_ensemble_weights.sum(dim=0)
+        self.neuron_level_ensemble_weights = self.neuron_level_ensemble_weights.unsqueeze(dim=1)
         
         # embedding_projection.get_alignment_scores())
 
@@ -94,7 +95,7 @@ class EmbeddingProjectionFuser():
         """
         embed_list = torch.stack(embed_list)
         # embed_list = embed_list * self.ensembel_weights.unsqueeze(dim=-1).unsqueeze(dim=-1)
-        pdb.set_trace()
+
         embed_list = embed_list * self.neuron_level_ensemble_weights
         aggregated_relative_embed = embed_list.sum(dim=0)
         return aggregated_relative_embed
