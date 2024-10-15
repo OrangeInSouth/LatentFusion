@@ -51,13 +51,13 @@ class EmbeddingProjectionFuser():
         self.embedding_projection = embedding_projection
 
         # Modify neuron-level ensemble weights
-        pdb.set_trace()
         selected_neuron_indices = torch.zeros_like(self.neuron_level_ensemble_weights)
         selected_neuron_indices[0] = 1  # Use all the neurons of the main model
         alignment_scores = embedding_projection.get_alignment_scores()
-        assert len(alignment_scores) == main_hidden_dim
-        alignment_scores.topk(int(main_hidden_dim * subspace_ratio))[1]
-        print(f"Size of Subspace: {int(main_hidden_dim * subspace_ratio)}")
+        assert len(alignment_scores) == self.main_hidden_dim
+        pdb.set_trace()
+        alignment_scores.topk(int(self.main_hidden_dim * subspace_ratio))[1]
+        print(f"Size of Subspace: {int(self.main_hidden_dim * subspace_ratio)}")
         selected_neuron_indices[1][selected_neuron_indices] = 1
         self.neuron_level_ensemble_weights = self.neuron_level_ensemble_weights * selected_neuron_indices
         self.neuron_level_ensemble_weights /= self.neuron_level_ensemble_weights.sum(dim=0)
