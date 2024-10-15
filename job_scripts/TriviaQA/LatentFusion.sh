@@ -16,10 +16,10 @@ conda activate ychuang
 mode=dev
 seed=1
 anchor_num=1000000
-tgt_layer=5
-src_layer=6
-tgt_model="mistral-7b"
-src_model="llama2-13b"
+tgt_layer=40
+src_layer=32
+tgt_model="llama2-13b"
+src_model="mistral-7b"
 
 proj_path=/share/home/fengxiaocheng/ychuang/LatentFusion
 export PYTHONPATH=${proj_path}
@@ -28,7 +28,7 @@ cd ${proj_path}
 
 export CUDA_VISIBLE_DEVICES=0
 
-for weight1 in 0.9999 0.0001 ; do  # 
+for weight1 in 0.5; do  # 0.9999 0.0001 
 
     # weight2=$((1.0-$weight1))
     weight2=$(echo "scale=4; 1.0 - $weight1" | bc)
