@@ -24,6 +24,8 @@ class EmbeddingProjection(object):
         self.tgt_std = None
         self.transformation_weights = None
         self.tgt_dtype = None
+        self.projection_loss_exp = None
+        self.projection_loss_std = None
     
     def normalize(self, embeddings):
         if embeddings.device != self.src_mean.device:
@@ -40,6 +42,22 @@ class EmbeddingProjection(object):
     def fit(self, src_embeddings, tgt_embeddings):
         raise NotImplementedError
     
+    def statisitcs_projection_accuracy(self, src_embeddings, tgt_embeddings):
+        if isinstance(self.transformation_weights, nn.Module):
+            self.transformation_weights.eval()
+        src_embeddings = src_embeddings.to(torch.float32)
+        tgt_embeddings = tgt_embeddings.to(torch.float32)
+        with torch.no_grad():
+            predicted_embedding = self.transform(src_embeddings)
+            
+            # loss = (tgt_embeddings - predicted_embedding).abs().mean()
+            self.projection_loss_exp = ((predicted_embedding - tgt_embeddings)**2).mean(dim=0)
+            self.projection_loss_std = ((predicted_embedding - tgt_embeddings)**2).std(dim=0)
+
+    def get_alignment_scores(self):
+        return self.projection_loss_exp * -1
+        # return (self.projection_loss_exp * -1) / self.projection_loss_std
+
     def projection(self, embeddings):
         raise NotImplementedError
     
@@ -375,6 +393,9 @@ class EstimationEmbeddingProjection(EmbeddingProjection):
         consuming_time = end_time - start_time
         print(f"Training Time: {(consuming_time)//3600}h:{consuming_time%3600}s")
 
+        # statistics the projection loss:
+        self.statisitcs_projection_accuracy(src_embeddings, tgt_embeddings)
+
     def transform(self, embeddings):
         embeddings = self.normalize(embeddings)
         embeddings = self.projection(embeddings)
@@ -395,7 +416,9 @@ class EstimationEmbeddingProjection(EmbeddingProjection):
             "tgt_mean":self.tgt_mean,
             "src_std":self.src_std,
             "tgt_std":self.tgt_std,
-            "transformation_weights": self.transformation_weights
+            "transformation_weights": self.transformation_weights,
+            "projection_loss_exp": self.projection_loss_exp,
+            "projection_loss_std": self.projection_loss_std,
         }
         torch.save(states, checkpoint_name)
         print(f"Embedding Projection is saved: {checkpoint_name}")
@@ -411,4 +434,6 @@ class EstimationEmbeddingProjection(EmbeddingProjection):
         self.src_std = state.pop("src_std")
         self.tgt_std = state.pop("tgt_std")
         self.transformation_weights = state.pop("transformation_weights")
+        self.projection_loss_exp = state.pop("projection_loss_exp")
+        self.projection_loss_std = state.pop("projection_loss_std")
         return state
