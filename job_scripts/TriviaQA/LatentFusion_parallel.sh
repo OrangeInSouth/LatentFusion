@@ -6,7 +6,7 @@
 #SBATCH -N 1                                  # 作业申请 1 个节点
 #SBATCH -t 8:00:00                            # 任务运行的最长时间为 1 小时
 ##SBATCH -w gpu02                             # 指定运行作业的节点是 gpu06，若不填写系统自动分配节点
-#SBATCH --gres=gpu:4          # 申请 1 卡 A100 80GB，如果只申请CPU可以删除本行
+#SBATCH --gres=gpu:5          # 申请 1 卡 A100 80GB，如果只申请CPU可以删除本行
 #SBATCH --cpus-per-task=8
 
 source ~/.bashrc
@@ -26,7 +26,7 @@ export PYTHONPATH=${proj_path}
 cd ${proj_path}
 
 
-gpu_count=4
+gpu_count=5
 gpu_id=0  # 初始化第一个GPU
 for weight1 in 0.8 ; do  # 
 
