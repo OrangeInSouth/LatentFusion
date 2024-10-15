@@ -28,22 +28,28 @@ cd ${proj_path}
 
 gpu_count=4
 gpu_id=0  # 初始化第一个GPU
-for weight1 in 0.8 0.7 0.6 0.5 ; do  # 
+for weight1 in 0.5 ; do  # 
 
-    # weight2=$((1.0-$weight1))
-    weight2=$(echo "scale=4; 1.0 - $weight1" | bc)
-    export CUDA_VISIBLE_DEVICES=$gpu_id
-    echo $gpu_id
-    python src/main.py --config confs/TriviaQA/llama2-13b_mistral-7b.json \
-    --models ${tgt_model} ${src_model} \
-    --layer-alignment $tgt_layer $src_layer \
-    --embedding-projection-path ${proj_path}/experiments//embedding_projection/${tgt_model}_${src_model}/EstimationEmbeddingProjection_${anchor_num}anchors_seed1_layer${tgt_layer}-${src_layer}.pt \
-    --result_save_dir ${proj_path}/experiments/TriviaQA/${mode}/${tgt_model}_${src_model}_${anchor_num}anchors_seed${seed} \
-    --sampling-anchor-num ${anchor_num} \
-    --ensemble_weight $weight1 $weight2 \
-    --run_mode ${mode} &
+    for sr in 0.8 0.7 0.6 0.5; do
 
-    gpu_id=$(( (gpu_id + 1) % gpu_count ))
+        # weight2=$((1.0-$weight1))
+        weight2=$(echo "scale=4; 1.0 - $weight1" | bc)
+        export CUDA_VISIBLE_DEVICES=$gpu_id
+        echo $gpu_id
+            python src/main.py --config confs/TriviaQA/llama2-13b_mistral-7b.json \
+        --models ${tgt_model} ${src_model} \
+        --layer-alignment $tgt_layer $src_layer \
+        --embedding-projection-path ${proj_path}/experiments//embedding_projection/${tgt_model}_${src_model}/EstimationEmbeddingProjection_${anchor_num}anchors_seed1_layer${tgt_layer}-${src_layer}.pt \
+        --result_save_dir ${proj_path}/experiments/TriviaQA/${mode}/${tgt_model}_${src_model}_${anchor_num}anchors_seed${seed} \
+        --sampling-anchor-num ${anchor_num} \
+        --ensemble_weight $weight1 $weight2 \
+        --subspace-ratio ${sr} \
+        --run_mode ${mode} &
+
+        gpu_id=$(( (gpu_id + 1) % gpu_count ))
+
+    done
+
 done
 
 wait
