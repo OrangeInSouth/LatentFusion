@@ -6,7 +6,7 @@
 #SBATCH -N 1                                  # 作业申请 1 个节点
 #SBATCH -t 8:00:00                            # 任务运行的最长时间为 1 小时
 ##SBATCH -w gpu02                             # 指定运行作业的节点是 gpu06，若不填写系统自动分配节点
-#SBATCH --gres=gpu:2
+#SBATCH --gres=gpu:6
 #SBATCH --cpus-per-task=8
 
 source ~/.bashrc
@@ -26,11 +26,11 @@ export PYTHONPATH=${proj_path}
 cd ${proj_path}
 
 
-gpu_count=2
+gpu_count=6
 gpu_id=0  # 初始化第一个GPU
-for weight1 in 0.8 ; do  # 
+for weight1 in 0.5 0.8 ; do  # 
 
-    for sr in 0.95 0.99; do
+    for sr in 0.1 0.2 0.3 0.4 0.95 0.99; do
 
         # weight2=$((1.0-$weight1))
         weight2=$(echo "scale=4; 1.0 - $weight1" | bc)
@@ -47,6 +47,11 @@ for weight1 in 0.8 ; do  #
         --run_mode ${mode} &
 
         gpu_id=$(( (gpu_id + 1) % gpu_count ))
+
+        if [ $gpu_id -eq 0 ]; then
+            echo "Waiting for GPU tasks to complete..."
+            wait
+        fi
 
     done
 
