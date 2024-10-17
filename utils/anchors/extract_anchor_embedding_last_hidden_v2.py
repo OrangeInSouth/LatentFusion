@@ -159,10 +159,23 @@ def extract_anchor_embeddings(model_name_list, data, output_dir, anchor_num=4000
     # torch.save(res_anchor_embeddings, output_path)
 
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="Parse hyperparameters")
+
+    # Add arguments with default values
+    parser.add_argument('--anchor-num', type=int, default=1000000, help='Number of Anchors used to estimation the embedding projection.')
+    # parser.add_argument('--seed', type=int, default=1, help='Random seed.')
+
+    # Parse the arguments
+    args = parser.parse_args()
+    return args
+
 if __name__ == "__main__":
     # data_path = "/data/home/cpfu/ychuang/reimplement_deepen/datasets/TriviaQA/wikipedia-dev-1900.jsonl"
     # data = read_multiline_json(data_path)
     # data = [i["question"] for i in data]
+
+    args = parse_args()
 
     # Load data and perform truncate
     data_path = "/share/home/fengxiaocheng/ychuang/Downloads/minipile/"
@@ -170,4 +183,4 @@ if __name__ == "__main__":
 
     output_dir = f"{proj_path}/experiments/anchor_embeddings/"
 
-    extract_anchor_embeddings(["llama2-13b", "mistral-7b"], dataset, output_dir, anchor_num=1000000)
+    extract_anchor_embeddings(["llama2-13b", "mistral-7b"], dataset, output_dir, anchor_num=int(args.anchor_num))
