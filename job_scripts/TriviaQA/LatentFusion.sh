@@ -16,8 +16,8 @@ conda activate ychuang
 mode=dev
 seed=1
 anchor_num=1000000
-tgt_layer=40
-src_layer=32
+tgt_layer=39
+src_layer=31
 tgt_model="llama2-13b"
 src_model="mistral-7b"
 
@@ -28,7 +28,7 @@ cd ${proj_path}
 
 export CUDA_VISIBLE_DEVICES=0
 
-for weight1 in 0.5; do  # 0.9999 0.0001 
+for weight1 in 0.0001; do  # 0.9999 0.0001 
 
     # weight2=$((1.0-$weight1))
     weight2=$(echo "scale=4; 1.0 - $weight1" | bc)
