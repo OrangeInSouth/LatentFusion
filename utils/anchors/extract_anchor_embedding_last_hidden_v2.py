@@ -4,6 +4,7 @@ import os
 import pdb
 import torch
 import sys
+import argparse
 proj_path = "/share/home/fengxiaocheng/ychuang/LatentFusion"
 
 sys.path.append(proj_path)
@@ -172,7 +173,7 @@ def parse_args():
 
 if __name__ == "__main__":
     # data_path = "/data/home/cpfu/ychuang/reimplement_deepen/datasets/TriviaQA/wikipedia-dev-1900.jsonl"
-    # data = read_multiline_json(data_path)
+    # data = read_multiline_json(data_path1)
     # data = [i["question"] for i in data]
 
     args = parse_args()
