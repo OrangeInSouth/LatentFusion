@@ -28,7 +28,7 @@ cd ${proj_path}
 
 export CUDA_VISIBLE_DEVICES=0
 
-for weight1 in 0.0001; do  # 0.9999 0.0001 
+for weight1 in 0.8; do  # 0.9999 0.0001 
 
     # weight2=$((1.0-$weight1))
     weight2=$(echo "scale=4; 1.0 - $weight1" | bc)
