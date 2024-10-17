@@ -16,8 +16,8 @@ conda activate ychuang
 mode=dev
 seed=1
 anchor_num=1000000
-tgt_layer=40
-src_layer=32
+tgt_layer=39
+src_layer=31
 tgt_model="llama2-13b"
 src_model="mistral-7b"
 
@@ -28,9 +28,9 @@ cd ${proj_path}
 
 gpu_count=6
 gpu_id=0  # 初始化第一个GPU
-for weight1 in 0.5 0.8 ; do  # 
+for weight1 in 0.0001 0.5 0.6 0.7 0.8 0.9; do  # 
 
-    for sr in 0.1 0.2 0.3 0.4 0.95 0.99; do
+    for sr in 1; do
 
         # weight2=$((1.0-$weight1))
         weight2=$(echo "scale=4; 1.0 - $weight1" | bc)

@@ -83,6 +83,7 @@ if __name__ == "__main__":
         print(f"Test on Estimation Embedding Projection: {test_loss:.4f}")
 
         estimate_pred_embedding = esitmation_embedding_projection.transform(test_dataset[:][0])        
+        pdb.set_trace()
         col = 1000
         print("Hisotram Comparision for Estimation:")
         compare_histogram(estimate_pred_embedding[:,col], test_dataset[:][1][:,col], 10)
