@@ -5,7 +5,7 @@ import pdb
 import re
 import argparse
 
-anchor_dir = "/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings_v3/"
+anchor_dir = "/share/home/fengxiaocheng/ychuang/LatentFusion/experiments/anchor_embeddings/"
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Parse hyperparameters")
