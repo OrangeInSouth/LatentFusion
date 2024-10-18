@@ -65,7 +65,7 @@ class DeepEnsemblerGenerator():
             # 3. 表示融合
             # 0. 加了一步操作，只更新最后面的10个token
             # pdb.set_trace()
-            changed_token_num = 10
+            changed_token_num = 100000
             unchanged_main_token_state = hidden_state_list[0][:-changed_token_num]
             hidden_state_list = [i[-changed_token_num:].clone().detach() for i in hidden_state_list]
             
